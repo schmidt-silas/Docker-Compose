@@ -1,0 +1,22 @@
+enable: true
+http:
+  routers:
+    pve1-hnet-jmsch-de:
+      entrypoints: http
+      rule: Host(`pve1.hnet.jmsch.de`)
+      middlewares: pve1-hnet-jmsch-de-https-redirect
+      service: pve1-hnet-jmsch-de
+    pve1-hnet-jmsch-de-secure:
+      entrypoints: https
+      rule: Host(`pve1.hnet.jmsch.de`)
+      tls: true
+      service: pve1-hnet-jmsch-de
+  middlewares:
+    pve1-hnet-jmsch-de-https-redirect:
+      redirectscheme:
+        scheme: https
+  services:
+    pve1-hnet-jmsch-de:
+      loadbalancer:
+        servers:
+          - url: 'https://172.30.0.2:8006/'
