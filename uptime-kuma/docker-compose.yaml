@@ -20,7 +20,7 @@ services:
       - "traefik.http.routers.${SUB_DOMAIN}-secure.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
       - "traefik.http.routers.${SUB_DOMAIN}-secure.tls=true"
       - "traefik.http.routers.${SUB_DOMAIN}-secure.service=${SUB_DOMAIN}"
-      - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
+      - "traefik.http.services.${SUB_DOMAIN}.loadbalancer.server.port=3001"
       - "traefik.docker.network=proxy"
 
 networks:
