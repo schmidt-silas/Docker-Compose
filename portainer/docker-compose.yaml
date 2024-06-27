@@ -1,7 +1,7 @@
 version: "3"
 services:
   portainer:
-    image: portainer/portainer-ee:latest # change -ee to -ce for community edition
+    image: portainer/portainer-${VARIANTE}:latest # change -ee to -ce for community edition
     container_name: portainer
     ports:
       - 8000:8000
