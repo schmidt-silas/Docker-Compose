@@ -1,0 +1,9 @@
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=${API_KEY}
+      - ZONE=${DOMAIN}
+      - SUBDOMAIN=${SUB_DOMAIN}
+      - PROXIED=false

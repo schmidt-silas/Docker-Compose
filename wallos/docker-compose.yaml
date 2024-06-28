@@ -1,0 +1,31 @@
+services:
+  wallos:
+    container_name: wallos
+    image: bellamy/wallos:latest
+    ports:
+      - "8282:80/tcp"
+    environment:
+      TZ: 'Europe/Berlin'
+    # Volumes store your data between container upgrades
+    volumes:
+      - './volume/db:/var/www/html/db'
+      - './volume/logos:/var/www/html/images/uploads/logos'
+    restart: unless-stopped
+    networks:
+      proxy:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${SUB_DOMAIN}.entrypoints=http"
+      - "traefik.http.routers.${SUB_DOMAIN}.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
+      - "traefik.http.middlewares.${SUB_DOMAIN}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${SUB_DOMAIN}.middlewares=${SUB_DOMAIN}-https-redirect"
+      - "traefik.http.routers.${SUB_DOMAIN}-secure.entrypoints=https"
+      - "traefik.http.routers.${SUB_DOMAIN}-secure.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.${SUB_DOMAIN}-secure.tls=true"
+      - "traefik.http.routers.${SUB_DOMAIN}-secure.service=${SUB_DOMAIN}"
+      - "traefik.http.services.${SUB_DOMAIN}.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
