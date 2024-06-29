@@ -1,0 +1,45 @@
+services:
+   checkmk:
+     image: checkmk/check-mk-raw:2.3.0-latest
+     container_name: checkmk
+     ports:
+       # web Port
+#       - "8080:5000/tcp"
+       # port for the Agent Receiver
+       - "8888:8000/tcp"
+       # receive SNMP traps and syslog messages
+#       - "162:162/udp"
+#       - "514:514/udp"
+#       - "514:514/tcp"
+       # Access to Livestatus via TCP
+#       - "6557:6557/tcp"
+     tmpfs:
+      - /opt/omd/sites/cmk/tmp:uid=1000,gid=1000
+     ulimits:
+      nofile: 1024
+     environment:
+       - MAIL_RELAY_HOST=${MAIL_RELAY_HOST}
+       - CMK_SITE_ID=${CMK_SITE_ID}
+       - CMK_PASSWORD=${CMK_PASSWORD}
+       - CMK_LIVESTATUS_TCP=${CMK_LIVESTATUS_TCP}
+     volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - ./volume:/omd/sites
+     networks:
+       proxy:
+     labels:
+       - "traefik.enable=true"
+       - "traefik.http.routers.${SUB_DOMAIN}.entrypoints=http"
+       - "traefik.http.routers.${SUB_DOMAIN}.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
+       - "traefik.http.middlewares.${SUB_DOMAIN}-https-redirect.redirectscheme.scheme=https"
+       - "traefik.http.routers.${SUB_DOMAIN}.middlewares=${SUB_DOMAIN}-https-redirect"
+       - "traefik.http.routers.${SUB_DOMAIN}-secure.entrypoints=https"
+       - "traefik.http.routers.${SUB_DOMAIN}-secure.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
+       - "traefik.http.routers.${SUB_DOMAIN}-secure.tls=true"
+       - "traefik.http.routers.${SUB_DOMAIN}-secure.service=${SUB_DOMAIN}"
+       - "traefik.http.services.${SUB_DOMAIN}.loadbalancer.server.port=5000"
+       - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
