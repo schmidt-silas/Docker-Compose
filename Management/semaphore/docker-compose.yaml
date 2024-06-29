@@ -1,6 +1,7 @@
 services:
   semaphore:
     image: semaphoreui/semaphore:latest
+    container_name: semaphore
     user: "${UID}:${GID}"
     environment:
       SEMAPHORE_DB_DIALECT: bolt
