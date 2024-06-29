@@ -1,14 +1,14 @@
 # HomeLab
 
-###GitLab
+GitLab - 
 ${SSH_PORT}:22
 
-###CheckMK
+CheckMK - 
 ${AGENT_RECIVER_PORT}:8000/tcp
 
-###Traefik
+Traefik - 
 80:80
 443:443
 
-###Portainer
+Portainer - 
 ${AGENT_PORT}:8000
