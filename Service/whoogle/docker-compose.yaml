@@ -40,8 +40,8 @@ services:
       #- WHOOGLE_ALT_QUORA=farside.link/quetre
     #env_file: # Alternatively, load variables from whoogle.env
       #- whoogle.env
-    ports:
-      - 5000:5000
+#    ports:
+#      - 5000:5000
     networks:
       proxy:
     labels:

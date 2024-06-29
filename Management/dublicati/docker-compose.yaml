@@ -11,8 +11,8 @@ services:
       - ./volume/config:/config
       - ./volume/backups:/backups
       - ../:/source
-    ports:
-      - 8200:8200
+#    ports:
+#      - 8200:8200
     restart: unless-stopped
     networks:
       proxy:

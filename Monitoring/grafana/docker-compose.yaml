@@ -1,16 +1,16 @@
-version: "3"
 services:
-  portainer:
-    image: portainer/portainer-${VARIANTE}:latest # change -ee to -ce for community edition
-    container_name: portainer
-    ports:
-      - ${AGENT_PORT}:8000
-#      - 9443:9443
-#      - 9000:9000 # for http
-    volumes:
-      - ./volume:/data
-      - /var/run/docker.sock:/var/run/docker.sock
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
     restart: unless-stopped
+    user: "${UID}:${GID}"
+    environment:
+     - GF_SERVER_ROOT_URL=https://${SUB_DOMAIN}.${DOMAIN}/
+     - GF_INSTALL_PLUGINS=grafana-clock-panel
+#    ports:
+#     - '3000:3000'
+    volumes:
+     - './volume:/var/lib/grafana'
     networks:
       proxy:
     labels:
@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.${SUB_DOMAIN}-secure.rule=Host(`${SUB_DOMAIN}.${DOMAIN}`)"
       - "traefik.http.routers.${SUB_DOMAIN}-secure.tls=true"
       - "traefik.http.routers.${SUB_DOMAIN}-secure.service=${SUB_DOMAIN}"
-      - "traefik.http.services.${SUB_DOMAIN}.loadbalancer.server.port=9000"
+      - "traefik.http.services.${SUB_DOMAIN}.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
 
 networks:
