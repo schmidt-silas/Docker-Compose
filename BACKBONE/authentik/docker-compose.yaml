@@ -64,7 +64,7 @@ services:
       - ./volume/custom-templates:/templates
     env_file:
       - .env
-#    ports:
+    ports:
 #      - "${COMPOSE_PORT_HTTP:-9000}:9000"
       - "${COMPOSE_PORT_HTTPS:-9443}:9443"
     depends_on:
