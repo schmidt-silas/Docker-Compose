@@ -26,7 +26,7 @@ services:
       - LETSENCRYPT_DOMAIN=
       - LETSENCRYPT_EMAIL=
     volumes:
-      - netbird-letsencrypt:/etc/letsencrypt/
+      - ./volume/letsencrypt:/etc/letsencrypt/
     networks:
       - proxy
     labels:
@@ -43,7 +43,7 @@ services:
     image: netbirdio/signal:latest
     restart: unless-stopped
     volumes:
-      - netbird-signal:/var/lib/netbird
+      - ./volume/signal:/var/lib/netbird
     #ports:
     #  - 10000:80
   #      # port and command for Let's Encrypt validation
@@ -68,9 +68,9 @@ services:
     depends_on:
       - dashboard
     volumes:
-      - netbird-mgmt:/var/lib/netbird
-      - netbird-letsencrypt:/etc/letsencrypt:ro
-      - ./management.json:/etc/netbird/management.json
+      - ./volume/mgmt:/var/lib/netbird
+      - ./volume/letsencrypt:/etc/letsencrypt:ro
+      - ./volume/management.json:/etc/netbird/management.json
     #ports:
     #  - 443:443 #API port
   #    # command for Let's Encrypt validation without dashboard container
@@ -105,17 +105,12 @@ services:
     restart: unless-stopped
     domainname: ${SUB_DOMAIN}.${DOMAIN}
     volumes:
-      - ./turnserver.conf:/etc/turnserver.conf:ro
+      - ./volume/turnserver.conf:/etc/turnserver.conf:ro
     #      - ./privkey.pem:/etc/coturn/private/privkey.pem:ro
     #      - ./cert.pem:/etc/coturn/certs/cert.pem:ro
     network_mode: host
     command:
       - -c /etc/turnserver.conf
-
-volumes:
-  netbird-mgmt:
-  netbird-signal:
-  netbird-letsencrypt:
 
 networks:
   proxy:
