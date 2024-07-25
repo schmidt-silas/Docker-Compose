@@ -14,6 +14,8 @@ packages:
   - fail2ban
   - curl
   - jq
+  - git
+  - gh
 package_update: true
 package_upgrade: true
   #Executed commands
