@@ -11,3 +11,5 @@ $AUTH_USER_PW
 ### RUN CONFIG SCRIPT
 ### COPY from /artefacts management.json and turnserver.conf to your docker compose folder
 ### fill .env file
+
+# https://docs.netbird.io/selfhosted/identity-providers#authentik
